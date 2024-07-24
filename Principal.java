@@ -66,14 +66,18 @@ public class Principal {
         System.out.println();
         System.out.println(conta);
 
-        System.out.println("Digite o valor do saque: ");
-        double saque = sc.nextDouble();
-        conta.saque(saque);
-        System.out.println();
-        System.out.println(conta);
-        System.out.println();
-
-        saldo += deposito - saque;
+        try {
+            System.out.println("Digite o valor do saque: ");
+            double saque = sc.nextDouble();
+            conta.saque(saque);
+            System.out.println();
+            System.out.println(conta);
+            System.out.println();
+            saldo += deposito - saque;
+        }
+        catch (SaqueException e){
+            e.limtSaque();
+        }
 
         switch (op){
             case 1:
@@ -87,7 +91,7 @@ public class Principal {
                 System.out.println("Digite o nome da instituição: ");
                 sc.nextLine();
                 String instituicao = sc.nextLine();
-                System.out.println("Digite o valor do  aumento do emprestimo: ");
+                System.out.println("Digite o valor do aumento do emprestimo: ");
                 double limtEmp = sc.nextDouble();
                 ContaEstudantil contaEstudantil = new ContaEstudantil(numero, titular, saldo, instituicao,limtEmp);
                 contaEstudantil.setLimiteEmprestimoEstudantil(limtEmp);

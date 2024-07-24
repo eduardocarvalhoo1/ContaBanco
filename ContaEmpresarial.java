@@ -4,9 +4,6 @@ public class ContaEmpresarial extends Conta{
     private Double limtemprestimo;
     private Double taxa = 3.00;
 
-    public ContaEmpresarial() {
-    }
-
     public ContaEmpresarial(Integer numero, String titular, Double saldo, Double limtemprestimo) {
         super(numero, titular, saldo);
         this.limtemprestimo = limtemprestimo;
@@ -24,12 +21,15 @@ public class ContaEmpresarial extends Conta{
         if (quantia <= limtemprestimo){
             saldo += quantia;
         }
+        else {
+            System.out.println("Valor acima do limite.");
+        }
     }
 
     // Sobrescrita
     @Override
-    public void saque(double quantia){
+    public void saque(double quantia) throws SaqueException{
         super.saque(quantia);
-        saldo -= taxa;
+        saldo -= quantia - taxa;
     }
 }

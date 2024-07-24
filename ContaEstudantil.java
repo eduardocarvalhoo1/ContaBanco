@@ -4,9 +4,6 @@ public class ContaEstudantil extends Conta {
     private String instuicao;
     private double limiteEmprestimoEstudantil = 1500.00;
 
-    public ContaEstudantil() {
-    }
-
     public ContaEstudantil(Integer numero, String titular, Double saldo, String instuicao, double limiteEmprestimoEstudantil) {
         super(numero, titular, saldo);
         this.instuicao = instuicao;

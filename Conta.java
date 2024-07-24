@@ -31,7 +31,6 @@ public class Conta {
         else if (numero < 0){
             throw new NumPeqException();
         }
-       // this.numero = numero;
     }
 
     public String getTitular() {
@@ -45,9 +44,15 @@ public class Conta {
     public Double getSaldo() {
         return saldo;
     }
-    public void saque(double quantia){
-        saldo -= quantia;
+    public void saque(double quantia) throws  SaqueException{
+        if (quantia > saldo){
+            throw new SaqueException();
+        }
+        else {
+            saldo -= quantia;
+        }
     }
+
     public void deposito(double quantia){
         saldo += quantia;
     }
