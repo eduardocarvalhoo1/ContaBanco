@@ -44,6 +44,11 @@ public class Conta {
     public Double getSaldo() {
         return saldo;
     }
+
+    public void setSaldo(Double saldo) {
+        this.saldo = saldo;
+    }
+
     public void saque(double quantia) throws  SaqueException{
         if (quantia > saldo){
             throw new SaqueException();
@@ -57,6 +62,7 @@ public class Conta {
         saldo += quantia;
     }
 
+    // Sobrescrita
     @Override
     public String toString() {
         return "Conta " +

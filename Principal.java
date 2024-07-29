@@ -6,7 +6,9 @@ public class Principal {
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
-        Conta conta;
+
+        Conta conta = new Conta();
+
 
         int op = -1;
         boolean validOp = false;
@@ -33,7 +35,7 @@ public class Principal {
             }
         }
 
-        conta = new Conta();
+        //conta = new Conta();
         int numero = 0; // Declare a variável 'numero' fora do bloco try-catch
         boolean loop = true;
         while (loop){
@@ -54,11 +56,13 @@ public class Principal {
 
         System.out.println("Informe o nome do titular da conta: ");
         String titular = sc.nextLine();
+        conta.setTitular(titular);
 
         System.out.println("Informe o saldo inicial: ");
         double saldo = sc.nextDouble();
+        conta.setSaldo(saldo);
 
-        conta = new Conta(numero, titular, saldo);
+       // conta = new Conta(numero, titular, saldo);
 
         System.out.println("Digite o valor do deposito: ");
         double deposito = sc.nextDouble();
@@ -81,11 +85,12 @@ public class Principal {
 
         switch (op){
             case 1:
-                ContaEmpresarial contaEmpresarial1 = new ContaEmpresarial(numero, titular, saldo, 30000.00);
+                //ContaEmpresarial contaEmpresarial1 = new ContaEmpresarial(numero, titular, saldo, 30000.00);
+                ContaEmpresarial contaEmpresarial = new ContaEmpresarial();
                 System.out.println("Digite o valor do emprestimo: ");
                 double emp = sc.nextDouble();
-                contaEmpresarial1.emprestimo(emp);
-                System.out.println(contaEmpresarial1);
+                contaEmpresarial.emprestimo(emp);
+                System.out.println(contaEmpresarial);
                 break;
             case 2:
                 System.out.println("Digite o nome da instituição: ");
