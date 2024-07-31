@@ -49,7 +49,7 @@ public class Conta {
         this.saldo = saldo;
     }
 
-    public void saque(double quantia) throws  SaqueException{
+    public void saque(Double quantia) throws SaqueException{
         if (quantia > saldo){
             throw new SaqueException();
         }
@@ -58,7 +58,7 @@ public class Conta {
         }
     }
 
-    public void deposito(double quantia){
+    public void deposito(Double quantia){
         saldo += quantia;
     }
 

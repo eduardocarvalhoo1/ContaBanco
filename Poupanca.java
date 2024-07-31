@@ -26,7 +26,7 @@ public class Poupanca extends Conta{
 
     // Sobrescrita
     @Override
-    public final void saque(double quantia){
+    public final void saque(Double quantia){
         saldo -= quantia;
     }
 }

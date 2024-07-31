@@ -36,7 +36,7 @@ public class Principal {
         }
 
         //conta = new Conta();
-        int numero = 0; // Declare a variável 'numero' fora do bloco try-catch
+        int numero = 0; // Declare a variável numero fora do bloco try-catch
         boolean loop = true;
         while (loop){
             try {
@@ -87,22 +87,42 @@ public class Principal {
             case 1:
                 //ContaEmpresarial contaEmpresarial1 = new ContaEmpresarial(numero, titular, saldo, 30000.00);
                 ContaEmpresarial contaEmpresarial = new ContaEmpresarial();
-                System.out.println("Digite o valor do emprestimo: ");
-                double emp = sc.nextDouble();
-                contaEmpresarial.emprestimo(emp);
+                try {
+                    contaEmpresarial.setNumero(numero);
+                }
+                catch (NumGrdException e) {
+                    e.erro();
+                }
+                catch (NumPeqException e) {
+                    e.erroPeq();
+                }
+                contaEmpresarial.setTitular(titular);
+                contaEmpresarial.setSaldo(saldo);
+                try {
+                    System.out.println("Digite o valor do emprestimo: ");
+                    double emp = sc.nextDouble();
+                    contaEmpresarial.emprestimo(emp);
+                }
+                catch (EmprestimoException e){
+                    e.limtEmprestimo();
+                }
                 System.out.println(contaEmpresarial);
                 break;
             case 2:
+                ContaEstudantil contaEstudantil = new ContaEstudantil();
                 System.out.println("Digite o nome da instituição: ");
                 sc.nextLine();
                 String instituicao = sc.nextLine();
+                contaEstudantil.setInstuicao(instituicao);
                 System.out.println("Digite o valor do aumento do emprestimo: ");
-                double limtEmp = sc.nextDouble();
-                ContaEstudantil contaEstudantil = new ContaEstudantil(numero, titular, saldo, instituicao,limtEmp);
-                contaEstudantil.setLimiteEmprestimoEstudantil(limtEmp);
+                double aumento = sc.nextDouble();
+                contaEstudantil.aumentarLimite(aumento);
+                //contaEstudantil.setLimiteEmprestimoEstudantil(limtEmp);
+                System.out.println("Seu limite agora é de R$" + contaEstudantil.getLimiteEmprestimoEstudantil());
                 break;
             case 3:
-                Poupanca poupanca = new Poupanca(numero, titular, saldo, 0.02);
+                Poupanca poupanca = new Poupanca();
+                poupanca.setSaldo(saldo);
                 System.out.println("Saldo antes dos juros: " + poupanca.getSaldo());
                 poupanca.saldoatualizado();
                 System.out.println("Saldo com juros: " + poupanca.getSaldo());
