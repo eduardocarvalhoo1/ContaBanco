@@ -9,6 +9,9 @@ public class Principal {
 
         Conta conta = new Conta();
 
+        double saldo = 0.0;
+        double deposito = 0.0;
+        double saque;
 
         int op = -1;
         boolean validOp = false;
@@ -32,6 +35,7 @@ public class Principal {
             catch (InputMismatchException e) {
                 System.out.println("Opção inválida. Tente novamente.");
                 sc.nextLine(); // Limpa o buffer do scanner
+                System.out.println();
             }
         }
 
@@ -52,27 +56,42 @@ public class Principal {
             catch (NumPeqException e) {
                 e.erroPeq();
             }
+            catch (InputMismatchException e) {
+                System.out.println("Erro: Entrada inválida. Por favor, insira um número.");
+                sc.nextLine();
+            }
         }
 
         System.out.println("Informe o nome do titular da conta: ");
         String titular = sc.nextLine();
         conta.setTitular(titular);
 
-        System.out.println("Informe o saldo inicial: ");
-        double saldo = sc.nextDouble();
-        conta.setSaldo(saldo);
+        try {
+            System.out.println("Informe o saldo inicial: ");
+            saldo = sc.nextDouble();
+            conta.setSaldo(saldo);
+        }
+        catch (InputMismatchException e) {
+            System.out.println("Erro: Entrada inválida. Por favor, insira um valor.");
+            sc.nextLine();
+        }
 
        // conta = new Conta(numero, titular, saldo);
-
-        System.out.println("Digite o valor do deposito: ");
-        double deposito = sc.nextDouble();
-        conta.deposito(deposito);
-        System.out.println();
-        System.out.println(conta);
+        try {
+            System.out.println("Digite o valor do deposito: ");
+            deposito = sc.nextDouble();
+            conta.deposito(deposito);
+            System.out.println();
+            System.out.println(conta);
+        }
+        catch (InputMismatchException e) {
+            System.out.println("Erro: Entrada inválida. Por favor, insira um valor.");
+            sc.nextLine();
+        }
 
         try {
             System.out.println("Digite o valor do saque: ");
-            double saque = sc.nextDouble();
+            saque = sc.nextDouble();
             conta.saque(saque);
             System.out.println();
             System.out.println(conta);
@@ -81,6 +100,10 @@ public class Principal {
         }
         catch (SaqueException e){
             e.limtSaque();
+        }
+        catch (InputMismatchException e) {
+            System.out.println("Erro: Entrada inválida. Por favor, insira um valor.");
+            sc.nextLine();
         }
 
         switch (op){
@@ -106,16 +129,27 @@ public class Principal {
                 catch (EmprestimoException e){
                     e.limtEmprestimo();
                 }
+                catch (InputMismatchException e) {
+                    System.out.println("Erro: Entrada inválida. Por favor, insira um valor.");
+                    sc.nextLine();
+                }
                 System.out.println(contaEmpresarial);
                 break;
             case 2:
+                double aumento = 0.0;
                 ContaEstudantil contaEstudantil = new ContaEstudantil();
                 System.out.println("Digite o nome da instituição: ");
                 sc.nextLine();
                 String instituicao = sc.nextLine();
                 contaEstudantil.setInstuicao(instituicao);
-                System.out.println("Digite o valor do aumento do emprestimo: ");
-                double aumento = sc.nextDouble();
+                try {
+                    System.out.println("Digite o valor do aumento do emprestimo: ");
+                    aumento = sc.nextDouble();
+                }
+                catch (InputMismatchException e) {
+                    System.out.println("Erro: Entrada inválida. Por favor, insira um valor.");
+                    sc.nextLine();
+                }
                 contaEstudantil.aumentarLimite(aumento);
                 //contaEstudantil.setLimiteEmprestimoEstudantil(limtEmp);
                 System.out.println("Seu limite agora é de R$" + contaEstudantil.getLimiteEmprestimoEstudantil());
