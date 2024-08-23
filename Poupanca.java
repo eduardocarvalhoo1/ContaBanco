@@ -4,12 +4,7 @@ public class Poupanca extends Conta{
     private Double juros = 0.02;
 
     public Poupanca() {
-        super();
-    }
 
-    public Poupanca(Integer numero, String titular, Double saldo, Double juros) {
-        super(numero, titular, saldo);
-        this.juros = juros;
     }
 
     public Double getJuros() {
@@ -20,13 +15,7 @@ public class Poupanca extends Conta{
         this.juros = juros;
     }
 
-    public void saldoatualizado(){
+    public void saldoAtualizado(){
         saldo += saldo * juros;
-    }
-
-    // Sobrescrita
-    @Override
-    public final void saque(double quantia){
-        saldo -= quantia;
     }
 }

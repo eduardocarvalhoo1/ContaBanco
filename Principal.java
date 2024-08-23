@@ -1,112 +1,221 @@
-// Eduardo Carvalho de Oliveira 2614529
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.List;
 
 public class Principal {
+
+    private static Conta conta = new Conta();
+    private static List <Conta> bd = new ArrayList<>();
+    private static Scanner sc = new Scanner(System.in);
+
     public static void main(String[] args) {
 
-        Scanner sc = new Scanner(System.in);
-        Conta conta;
+        boolean continuar = true;
 
-        int op = -1;
-        boolean validOp = false;
+        while (continuar) {
 
-        while (!validOp) {
-            try {
-                System.out.println("Escolha o tipo de conta: ");
-                System.out.println("1) CONTA EMPRESARIAL");
-                System.out.println("2) CONTA ESTUDANTIL");
-                System.out.println("3) CONTA POUPANÇA");
-                op = sc.nextInt();
+            conta = new Conta();
+            double saldo = 0.0;
+            double deposito = 0.0;
+            double saque;
 
-                if (op >= 1 && op <= 3) {
-                    validOp = true;
-                }
-                else {
+            int op = -1;
+            boolean validOp = false;
+
+            while (!validOp) {
+                try {
+                    System.out.println("Escolha o tipo de conta: ");
+                    System.out.println("1) CONTA EMPRESARIAL");
+                    System.out.println("2) CONTA ESTUDANTIL");
+                    System.out.println("3) CONTA POUPANÇA");
+                    op = sc.nextInt();
+
+                    if (op >= 1 && op <= 3) {
+                        validOp = true;
+                    } else {
+                        System.out.println("Opção inválida. Tente novamente.");
+                        System.out.println();
+                    }
+                } catch (InputMismatchException e) {
                     System.out.println("Opção inválida. Tente novamente.");
+                    sc.nextLine(); // Limpa o buffer do scanner
                     System.out.println();
                 }
             }
-            catch (InputMismatchException e) {
-                System.out.println("Opção inválida. Tente novamente.");
-                sc.nextLine(); // Limpa o buffer do scanner
+
+            int numero = 0; // Declare a variável numero fora do bloco try-catch
+            boolean loop = true;
+            while (loop) {
+                try {
+                    System.out.println("Informe o número da conta: ");
+                    numero = sc.nextInt();
+                    sc.nextLine();
+                    conta.setNumero(numero);
+                    loop = false;
+                } catch (NumGrdException e) {
+                    e.erro();
+                } catch (NumPeqException e) {
+                    e.erroPeq();
+                } catch (InputMismatchException e) {
+                    System.out.println("Erro: Entrada inválida. Por favor, insira um número.");
+                    sc.nextLine();
+                }
+            }
+
+            System.out.println("Informe o nome do titular da conta: ");
+            String titular = sc.nextLine();
+            conta.setTitular(titular);
+
+            boolean validSaldo = false;
+            while (!validSaldo) {
+                try {
+                    System.out.println("Informe o saldo inicial: ");
+                    saldo = sc.nextDouble();
+                    conta.setSaldo(saldo);
+                    validSaldo = true;
+                } catch (InputMismatchException e) {
+                    System.out.println("Erro: Entrada inválida. Por favor, insira um valor.");
+                    sc.nextLine();
+                }
+            }
+
+            boolean validDeposito = false;
+            while (!validDeposito) {
+                try {
+                    System.out.println("Digite o valor do deposito: ");
+                    deposito = sc.nextDouble();
+                    conta.deposito(deposito);
+                    System.out.println();
+                    System.out.println(conta);
+                    validDeposito = true;
+                } catch (InputMismatchException e) {
+                    System.out.println("Erro: Entrada inválida. Por favor, insira um valor.");
+                    sc.nextLine();
+                }
+            }
+
+            boolean validSaque = false;
+            while (!validSaque) {
+                try {
+                    System.out.println("Digite o valor do saque: ");
+                    saque = sc.nextDouble();
+                    conta.saque(saque);
+                    System.out.println();
+                    System.out.println(conta);
+                    System.out.println();
+                    saldo += deposito - saque;
+                    validSaque = true;
+                } catch (SaqueException e) {
+                    e.limtSaque();
+                } catch (InputMismatchException e) {
+                    System.out.println("Erro: Entrada inválida. Por favor, insira um valor.");
+                    sc.nextLine();
+                }
+            }
+
+            switch (op) {
+                case 1:
+                    ContaEmpresarial contaEmpresarial = new ContaEmpresarial();
+                    try {
+                        contaEmpresarial.setNumero(numero);
+                    } catch (NumGrdException e) {
+                        e.erro();
+                    } catch (NumPeqException e) {
+                        e.erroPeq();
+                    }
+                    contaEmpresarial.setTitular(titular);
+                    contaEmpresarial.setSaldo(saldo);
+                    boolean validEmprestimo = false;
+                    while (!validEmprestimo) {
+                        try {
+                            System.out.println("Digite o valor do emprestimo: ");
+                            double emp = sc.nextDouble();
+                            contaEmpresarial.emprestimo(emp);
+                            validEmprestimo = true;
+                        } catch (EmprestimoException e) {
+                            e.limtEmprestimo();
+                        } catch (InputMismatchException e) {
+                            System.out.println("Erro: Entrada inválida. Por favor, insira um valor.");
+                            sc.nextLine();
+                        }
+                    }
+                    System.out.println(contaEmpresarial);
+                    break;
+                case 2:
+                    double aumento;
+                    ContaEstudantil contaEstudantil = new ContaEstudantil();
+                    System.out.println("Digite o nome da instituição: ");
+                    sc.nextLine();
+                    String instituicao = sc.nextLine();
+                    contaEstudantil.setInstuicao(instituicao);
+                    boolean validAumento = false;
+                    while (!validAumento) {
+                        try {
+                            System.out.println("Digite o valor do aumento do emprestimo: ");
+                            aumento = sc.nextDouble();
+                            contaEstudantil.aumentarLimite(aumento);
+                            validAumento = true;
+                        } catch (InputMismatchException e) {
+                            System.out.println("Erro: Entrada inválida. Por favor, insira um valor.");
+                            sc.nextLine();
+                        }
+                    }
+                    System.out.println("Seu limite era de R$ 15000.00 agora é de R$" + contaEstudantil.getLimiteEmprestimoEstudantil());
+                    break;
+                case 3:
+                    Poupanca poupanca = new Poupanca();
+                    poupanca.setSaldo(saldo);
+                    System.out.println("Saldo antes dos juros: " + poupanca.getSaldo());
+                    poupanca.saldoAtualizado();
+                    System.out.println("Saldo com juros: " + poupanca.getSaldo());
+                    break;
+                default:
+                    System.out.println("Opção inválida.");
+                    break;
+            }
+
+            if (conta != null) {
+                bd.add(conta);
+            }
+
+            System.out.println();
+            System.out.println("Deseja criar mais uma conta? <s/n>");
+            sc.nextLine();
+            String resp = sc.nextLine();
+            if (resp.equalsIgnoreCase("n")) {
+                continuar = false;
             }
         }
 
-        conta = new Conta();
-        int numero = 0; // Declare a variável 'numero' fora do bloco try-catch
-        boolean loop = true;
-        while (loop){
-            try {
-                System.out.println("Informe o número da conta: ");
-                numero = sc.nextInt();
-                sc.nextLine();
-                conta.setNumero(numero);
-                loop = false;
-            }
-            catch (NumGrdException e) {
-                e.erro ();
-            }
-            catch (NumPeqException e) {
-                e.erroPeq();
-            }
-        }
-
-        System.out.println("Informe o nome do titular da conta: ");
-        String titular = sc.nextLine();
-
-        System.out.println("Informe o saldo inicial: ");
-        double saldo = sc.nextDouble();
-
-        conta = new Conta(numero, titular, saldo);
-
-        System.out.println("Digite o valor do deposito: ");
-        double deposito = sc.nextDouble();
-        conta.deposito(deposito);
         System.out.println();
-        System.out.println(conta);
+        System.out.println("1) RELATÓRIO GERAL DE CONTAS");
+        System.out.println("2) CONSULTAR CONTA");
+        System.out.println("3) EXCLUIR CONTA");
+        System.out.println("4) ALTERAR NOME DO PROPRIETÁRIO DA CONTA");
+        System.out.println("5) SAIR");
+        int op2 = sc.nextInt();
 
-        try {
-            System.out.println("Digite o valor do saque: ");
-            double saque = sc.nextDouble();
-            conta.saque(saque);
-            System.out.println();
-            System.out.println(conta);
-            System.out.println();
-            saldo += deposito - saque;
-        }
-        catch (SaqueException e){
-            e.limtSaque();
-        }
-
-        switch (op){
+        switch (op2){
             case 1:
-                ContaEmpresarial contaEmpresarial1 = new ContaEmpresarial(numero, titular, saldo, 30000.00);
-                System.out.println("Digite o valor do emprestimo: ");
-                double emp = sc.nextDouble();
-                contaEmpresarial1.emprestimo(emp);
-                System.out.println(contaEmpresarial1);
+                for (Conta conta : bd) {
+                    System.out.println(conta.getNumero() + ", Titular: "
+                            + conta.getTitular() + ", Saldo: R$" + conta.getSaldo());
+                }
                 break;
             case 2:
-                System.out.println("Digite o nome da instituição: ");
-                sc.nextLine();
-                String instituicao = sc.nextLine();
-                System.out.println("Digite o valor do aumento do emprestimo: ");
-                double limtEmp = sc.nextDouble();
-                ContaEstudantil contaEstudantil = new ContaEstudantil(numero, titular, saldo, instituicao,limtEmp);
-                contaEstudantil.setLimiteEmprestimoEstudantil(limtEmp);
-                break;
-            case 3:
-                Poupanca poupanca = new Poupanca(numero, titular, saldo, 0.02);
-                System.out.println("Saldo antes dos juros: " + poupanca.getSaldo());
-                poupanca.saldoatualizado();
-                System.out.println("Saldo com juros: " + poupanca.getSaldo());
+                System.out.println("Digite o número da conta que deseja consultar: ");
+                int n = sc.nextInt();
+                for (int i = 0; i < bd.size(); i++) {
+                    if (conta.getNumero() == bd.get(i).getNumero()){
+                        System.out.println(conta.getNumero() + ", Titular: "
+                                + conta.getTitular() + ", Saldo: R$" + conta.getSaldo());
+                    }
+                }
                 break;
             default:
-                System.out.println("Opção inválida.");
-                break;
+                throw new IllegalStateException("Opção Inválida");
         }
-
         sc.close();
     }
 }

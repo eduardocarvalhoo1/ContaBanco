@@ -1,5 +1,5 @@
 // Eduardo Carvalho de Oliveira 2614529
-public class Conta {
+public class Conta implements IOperacaoBancaria {
 
     private Integer numero;
     private String titular;
@@ -9,19 +9,13 @@ public class Conta {
 
     }
 
-    public Conta(Integer numero, String titular, Double saldo) {
-        this.numero = numero;
-        this.titular = titular;
-        this.saldo = saldo;
-    }
-
     public Integer getNumero() {
         return numero;
     }
 
     public void setNumero(Integer numero) throws NumGrdException, NumPeqException {
         if(numero > 0){
-            if(numero < 100000){
+            if(numero < 999999){
                 this.numero = numero;
             }
             else{
@@ -44,19 +38,25 @@ public class Conta {
     public Double getSaldo() {
         return saldo;
     }
-    public void saque(double quantia) throws  SaqueException{
+
+    public void setSaldo(Double saldo) {
+        this.saldo = saldo;
+    }
+
+    // Sobrescrita
+    public void saque(Double quantia) throws SaqueException{
         if (quantia > saldo){
             throw new SaqueException();
         }
-        else {
             saldo -= quantia;
-        }
     }
 
-    public void deposito(double quantia){
+    // Sobrescrita
+    public void deposito(Double quantia){
         saldo += quantia;
     }
 
+    // Sobrescrita
     @Override
     public String toString() {
         return "Conta " +
