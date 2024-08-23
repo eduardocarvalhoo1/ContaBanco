@@ -188,33 +188,59 @@ public class Principal {
             }
         }
 
-        System.out.println();
-        System.out.println("1) RELATÓRIO GERAL DE CONTAS");
-        System.out.println("2) CONSULTAR CONTA");
-        System.out.println("3) EXCLUIR CONTA");
-        System.out.println("4) ALTERAR NOME DO PROPRIETÁRIO DA CONTA");
-        System.out.println("5) SAIR");
-        int op2 = sc.nextInt();
+        boolean cont = true;
+        while (cont) {
+            System.out.println();
+            System.out.println("1) RELATÓRIO GERAL DE CONTAS");
+            System.out.println("2) CONSULTAR CONTA");
+            System.out.println("3) EXCLUIR CONTA");
+            System.out.println("4) ALTERAR NOME DO PROPRIETÁRIO DA CONTA");
+            System.out.println("5) SAIR");
+            int op2 = sc.nextInt();
 
-        switch (op2){
-            case 1:
-                for (Conta conta : bd) {
-                    System.out.println(conta.getNumero() + ", Titular: "
-                            + conta.getTitular() + ", Saldo: R$" + conta.getSaldo());
-                }
-                break;
-            case 2:
-                System.out.println("Digite o número da conta que deseja consultar: ");
-                int n = sc.nextInt();
-                for (int i = 0; i < bd.size(); i++) {
-                    if (conta.getNumero() == bd.get(i).getNumero()){
+            switch (op2) {
+                case 1:
+                    for (Conta conta : bd) {
                         System.out.println(conta.getNumero() + ", Titular: "
                                 + conta.getTitular() + ", Saldo: R$" + conta.getSaldo());
                     }
-                }
-                break;
-            default:
-                throw new IllegalStateException("Opção Inválida");
+                    break;
+                case 2:
+                    System.out.println("Digite o número da conta que deseja consultar: ");
+                    int n = sc.nextInt();
+                    for (Conta conta : bd) {
+                        if (conta.getNumero() == n) {
+                            System.out.println("Número: " + conta.getNumero() + ", Titular: "
+                                    + conta.getTitular() + ", Saldo: R$" + conta.getSaldo());
+                        }
+                    }
+                    break;
+                case 3:
+                    System.out.println("Digite o número da conta que deseja excluir: ");
+                    int num = sc.nextInt();
+                    for (int i = 0; i < bd.size(); i++) {
+                        if (bd.get(i).getNumero() == num) {
+                           bd.remove(i);
+                        }
+                    }
+                    break;
+                case 4:
+                    System.out.println("Digite o número da conta que deseja alterar: ");
+                    int num2 = sc.nextInt();
+                    for (Conta conta : bd){
+                        if (conta.getNumero() == num2){
+                            System.out.println("Digite o novo nome do Titular: ");
+                            sc.nextLine();
+                            String NovoNome = sc.nextLine();
+                            conta.setTitular(NovoNome);
+                        }
+                    }
+                    break;
+                case 5:
+                    System.exit(0);
+                default:
+                    throw new IllegalStateException("Opção Inválida");
+            }
         }
         sc.close();
     }
