@@ -5,8 +5,7 @@ import java.util.List;
 
 public class Principal {
 
-    private static Conta conta = new Conta();
-    private static List <Conta> bd = new ArrayList<>();
+    private static List<Conta> bd = new ArrayList<>();
     private static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) {
@@ -15,9 +14,8 @@ public class Principal {
 
         while (continuar) {
 
-            conta = new Conta();
             double saldo = 0.0;
-            double deposito = 0.0;
+            double deposito;
             double saque;
 
             int op = -1;
@@ -51,12 +49,7 @@ public class Principal {
                     System.out.println("Informe o número da conta: ");
                     numero = sc.nextInt();
                     sc.nextLine();
-                    conta.setNumero(numero);
                     loop = false;
-                } catch (NumGrdException e) {
-                    e.erro();
-                } catch (NumPeqException e) {
-                    e.erroPeq();
                 } catch (InputMismatchException e) {
                     System.out.println("Erro: Entrada inválida. Por favor, insira um número.");
                     sc.nextLine();
@@ -65,14 +58,12 @@ public class Principal {
 
             System.out.println("Informe o nome do titular da conta: ");
             String titular = sc.nextLine();
-            conta.setTitular(titular);
 
             boolean validSaldo = false;
             while (!validSaldo) {
                 try {
                     System.out.println("Informe o saldo inicial: ");
                     saldo = sc.nextDouble();
-                    conta.setSaldo(saldo);
                     validSaldo = true;
                 } catch (InputMismatchException e) {
                     System.out.println("Erro: Entrada inválida. Por favor, insira um valor.");
@@ -85,9 +76,8 @@ public class Principal {
                 try {
                     System.out.println("Digite o valor do deposito: ");
                     deposito = sc.nextDouble();
-                    conta.deposito(deposito);
+                    saldo += deposito;
                     System.out.println();
-                    System.out.println(conta);
                     validDeposito = true;
                 } catch (InputMismatchException e) {
                     System.out.println("Erro: Entrada inválida. Por favor, insira um valor.");
@@ -100,19 +90,21 @@ public class Principal {
                 try {
                     System.out.println("Digite o valor do saque: ");
                     saque = sc.nextDouble();
-                    conta.saque(saque);
-                    System.out.println();
-                    System.out.println(conta);
-                    System.out.println();
-                    saldo += deposito - saque;
-                    validSaque = true;
-                } catch (SaqueException e) {
-                    e.limtSaque();
+                    if (saque > saldo) {
+                        System.out.println("Erro: Saldo insuficiente.");
+                    } else {
+                        saldo -= saque;
+                        System.out.println();
+                        System.out.println();
+                        validSaque = true;
+                    }
                 } catch (InputMismatchException e) {
                     System.out.println("Erro: Entrada inválida. Por favor, insira um valor.");
                     sc.nextLine();
                 }
             }
+
+            Conta conta = null;
 
             switch (op) {
                 case 1:
@@ -140,11 +132,20 @@ public class Principal {
                             sc.nextLine();
                         }
                     }
-                    System.out.println(contaEmpresarial);
+                    conta = contaEmpresarial;
                     break;
                 case 2:
                     double aumento;
                     ContaEstudantil contaEstudantil = new ContaEstudantil();
+                    try {
+                        contaEstudantil.setNumero(numero);
+                    } catch (NumGrdException e) {
+                        e.erro();
+                    } catch (NumPeqException e) {
+                        e.erroPeq();
+                    }
+                    contaEstudantil.setTitular(titular);
+                    contaEstudantil.setSaldo(saldo);
                     System.out.println("Digite o nome da instituição: ");
                     sc.nextLine();
                     String instituicao = sc.nextLine();
@@ -161,14 +162,24 @@ public class Principal {
                             sc.nextLine();
                         }
                     }
+                    conta = contaEstudantil;
                     System.out.println("Seu limite era de R$ 15000.00 agora é de R$" + contaEstudantil.getLimiteEmprestimoEstudantil());
                     break;
                 case 3:
                     Poupanca poupanca = new Poupanca();
+                    try {
+                        poupanca.setNumero(numero);
+                    } catch (NumGrdException e) {
+                        e.erro();
+                    } catch (NumPeqException e) {
+                        e.erroPeq();
+                    }
+                    poupanca.setTitular(titular);
                     poupanca.setSaldo(saldo);
                     System.out.println("Saldo antes dos juros: " + poupanca.getSaldo());
                     poupanca.saldoAtualizado();
                     System.out.println("Saldo com juros: " + poupanca.getSaldo());
+                    conta = poupanca;
                     break;
                 default:
                     System.out.println("Opção inválida.");
@@ -200,18 +211,18 @@ public class Principal {
 
             switch (op2) {
                 case 1:
-                    for (Conta conta : bd) {
-                        System.out.println(conta.getNumero() + ", Titular: "
-                                + conta.getTitular() + ", Saldo: R$" + conta.getSaldo());
+                    for (Conta c : bd) {
+                        System.out.println(c.getNumero() + ", Titular: "
+                                + c.getTitular() + ", Saldo: R$" + c.getSaldo());
                     }
                     break;
                 case 2:
                     System.out.println("Digite o número da conta que deseja consultar: ");
                     int n = sc.nextInt();
-                    for (Conta conta : bd) {
-                        if (conta.getNumero() == n) {
-                            System.out.println("Número: " + conta.getNumero() + ", Titular: "
-                                    + conta.getTitular() + ", Saldo: R$" + conta.getSaldo());
+                    for (Conta c : bd) {
+                        if (c.getNumero() == n) {
+                            System.out.println("Número: " + c.getNumero() + ", Titular: "
+                                    + c.getTitular() + ", Saldo: R$" + c.getSaldo());
                         }
                     }
                     break;
@@ -220,19 +231,19 @@ public class Principal {
                     int num = sc.nextInt();
                     for (int i = 0; i < bd.size(); i++) {
                         if (bd.get(i).getNumero() == num) {
-                           bd.remove(i);
+                            bd.remove(i);
                         }
                     }
                     break;
                 case 4:
                     System.out.println("Digite o número da conta que deseja alterar: ");
                     int num2 = sc.nextInt();
-                    for (Conta conta : bd){
-                        if (conta.getNumero() == num2){
+                    for (Conta c : bd) {
+                        if (c.getNumero() == num2) {
                             System.out.println("Digite o novo nome do Titular: ");
                             sc.nextLine();
                             String NovoNome = sc.nextLine();
-                            conta.setTitular(NovoNome);
+                            c.setTitular(NovoNome);
                         }
                     }
                     break;
@@ -245,3 +256,4 @@ public class Principal {
         sc.close();
     }
 }
+

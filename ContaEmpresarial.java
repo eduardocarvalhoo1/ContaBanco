@@ -23,4 +23,12 @@ public class ContaEmpresarial extends Conta{
             throw new EmprestimoException();
         }
     }
+
+    public void saque(Double quantia) throws SaqueException{
+        if (quantia > saldo){
+            throw new SaqueException();
+        }
+        Double tax = 0.005;
+        saldo -= quantia - tax;
+    }
 }

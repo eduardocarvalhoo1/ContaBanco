@@ -1,10 +1,10 @@
 // Eduardo Carvalho de Oliveira 2614529
 public class Poupanca extends Conta{
 
-    private Double juros = 0.02;
+    private Double juros;
 
     public Poupanca() {
-
+        this.juros = 0.02;
     }
 
     public Double getJuros() {

@@ -1,12 +1,20 @@
 // Eduardo Carvalho de Oliveira 2614529
-public class Conta implements IOperacaoBancaria {
+public abstract class Conta implements IOperacaoBancaria {
 
     private Integer numero;
     private String titular;
-    protected Double saldo = 0.0;
+    protected Double saldo;
 
     public Conta() {
+        this.numero = 0;
+        this.titular = "";
+        this.saldo = 0.0;
+    }
 
+    public Conta(Integer numero, String titular, Double saldo) {
+        this.numero = numero;
+        this.titular = titular;
+        this.saldo = saldo;
     }
 
     public Integer getNumero() {
@@ -56,13 +64,4 @@ public class Conta implements IOperacaoBancaria {
         saldo += quantia;
     }
 
-    // Sobrescrita
-    @Override
-    public String toString() {
-        return "Conta " +
-                numero +
-                ", Titular: " + titular +
-                ", Saldo: R$" +
-                String.format("%.2f", saldo);
-    }
 }

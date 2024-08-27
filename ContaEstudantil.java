@@ -2,9 +2,11 @@
 public class ContaEstudantil extends Conta {
 
     private String instuicao;
-    private Double limiteEmprestimoEstudantil = 15000.00;
+    private Double limiteEmprestimoEstudantil;
 
     public ContaEstudantil() {
+        this.instuicao = "";
+        this.limiteEmprestimoEstudantil = 15000.00;
     }
 
 
