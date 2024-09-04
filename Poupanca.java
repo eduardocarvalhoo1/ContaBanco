@@ -2,6 +2,7 @@
 public class Poupanca extends Conta{
 
     private Double juros;
+    
 
     public Poupanca() {
         this.juros = 0.02;
@@ -14,8 +15,12 @@ public class Poupanca extends Conta{
     public void setJuros(Double juros) {
         this.juros = juros;
     }
-
+    
     public void saldoAtualizado(){
         saldo += saldo * juros;
+    }
+    
+    public Double getSaldoAtualizado() {
+        return saldo + (saldo * juros);
     }
 }

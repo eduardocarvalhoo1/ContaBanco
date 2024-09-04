@@ -1,5 +1,5 @@
 // Eduardo Carvalho de Oliveira 2614529
-public abstract class Conta implements IOperacaoBancaria {
+public class Conta implements IOperacaoBancaria {
 
     private Integer numero;
     private String titular;

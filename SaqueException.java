@@ -1,7 +1,8 @@
 // Eduardo Carvalho de Oliveira 2614529
+import javax.swing.JOptionPane;
+
 public class SaqueException extends Exception {
     public void limtSaque (){
-        System.out.println("O valor do saque é superior ao do saldo da conta.");
-        System.out.println();
+        JOptionPane.showMessageDialog(null, "O valor do saque é superior ao do saldo da conta.", "Entrada Inválida", 0);
     }
 }
